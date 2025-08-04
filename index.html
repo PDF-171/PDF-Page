@@ -1,164 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>Flyer Viewer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <title>Flyer Flipbook</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" type="text/css" href="css/basic.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/turn.min.js"></script>
 
-    body {
-      margin: 0;
-      background: #111;
-      color: white;
-      font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
+    <style>
+        body {
+            margin: 0;
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-    #image-container {
-      max-height: 90vh;
-      max-width: 100vw;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+        #book {
+            width: 90vw;
+            height: 90vh;
+        }
 
-    #flyer-image {
-      max-height: 90vh;
-      max-width: 100vw;
-      object-fit: contain;
-      transition: 0.5s ease;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-    }
+        .page {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    .button-row {
-      height: 10vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 30px;
-    }
-
-    .nav-button {
-      background: #444;
-      color: white;
-      padding: 10px 20px;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0.5;
-      cursor: default;
-      transition: 0.3s;
-    }
-
-    .nav-button.active {
-      opacity: 1;
-      background: #666;
-      cursor: pointer;
-    }
-
-    .nav-button .triangle {
-      width: 0;
-      height: 0;
-      border-style: solid;
-      margin-left: 8px;
-      margin-right: 8px;
-    }
-
-    .left .triangle {
-      border-width: 10px 14px 10px 0;
-      border-color: transparent #fff transparent transparent;
-    }
-
-    .right .triangle {
-      border-width: 10px 0 10px 14px;
-      border-color: transparent transparent transparent #fff;
-    }
-
-    .download-button {
-      background: #333;
-      color: white;
-      padding: 10px 24px;
-      font-size: 1rem;
-      border-radius: 20px;
-      border: none;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .download-button:hover {
-      background: #555;
-    }
-  </style>
+        .page img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+    </style>
 </head>
 <body>
 
-  <div id="image-container">
-    <img id="flyer-image" src="apollo-flyer-page1.jpg" alt="Flyer Page" />
-  </div>
+<div id="book">
+    <div class="page"><img src="apollo-flyer-page1.jpg" alt="Page 1"></div>
+    <div class="page"><img src="apollo-flyer-page2.jpg" alt="Page 2"></div>
+</div>
 
-  <div class="button-row">
-    <button class="nav-button left" id="prevBtn" onclick="showPage(1)" disabled>
-      <div class="triangle"></div>
-    </button>
-
-    <button class="nav-button right active" id="nextBtn" onclick="showPage(2)">
-      <div class="triangle"></div>
-    </button>
-
-    <button class="download-button" onclick="downloadPDF()">Download PDF</button>
-  </div>
-
-  <script>
-    let currentPage = 1;
-
-    function showPage(page) {
-      if (page === 1 && currentPage !== 1) {
-        document.getElementById('flyer-image').src = 'apollo-flyer-page1.jpg';
-        currentPage = 1;
-        updateButtons();
-      } else if (page === 2 && currentPage !== 2) {
-        document.getElementById('flyer-image').src = 'apollo-flyer-page2.jpg';
-        currentPage = 2;
-        updateButtons();
-      }
-    }
-
-    function updateButtons() {
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
-
-      if (currentPage === 1) {
-        prevBtn.classList.remove('active');
-        prevBtn.disabled = true;
-        nextBtn.classList.add('active');
-        nextBtn.disabled = false;
-      } else {
-        prevBtn.classList.add('active');
-        prevBtn.disabled = false;
-        nextBtn.classList.remove('active');
-        nextBtn.disabled = true;
-      }
-    }
-
-    function downloadPDF() {
-      const a = document.createElement('a');
-      a.href = 'apollo-flyer.pdf';
-      a.download = 'apollo-flyer.pdf';
-      a.click();
-    }
-  </script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#book').turn({
+            width: $('#book').width(),
+            height: $('#book').height(),
+            autoCenter: true,
+            display: 'single',
+            elevation: 50,
+            gradients: true
+        });
+    });
+</script>
 
 </body>
 </html>
-
