@@ -2,94 +2,92 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Diagonal Flip</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pure CSS Flipbook</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       background: #111;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      font-family: sans-serif;
     }
 
-    .book {
-      width: 600px;
-      height: 90vh;
-      perspective: 2000px;
+    .book-container {
       position: relative;
+      width: 600px;
+      height: 850px;
+      perspective: 2000px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
     }
 
     .page {
       width: 100%;
       height: 100%;
       position: absolute;
-      transform-style: preserve-3d;
-      transition: transform 1s;
-      cursor: pointer;
-    }
-
-    .page.flipped {
-      transform: rotateY(-180deg);
-    }
-
-    .front, .back {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      backface-visibility: hidden;
       background-size: cover;
       background-position: center;
+      transition: transform 1.2s ease;
       border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
     }
 
-    .front {
+    .page.front {
       background-image: url('apollo-flyer-page1.jpg');
       z-index: 2;
+      transform-origin: bottom right;
     }
 
-    .back {
+    .page.back {
       background-image: url('apollo-flyer-page2.jpg');
-      transform: rotateY(180deg);
+      z-index: 1;
     }
 
-    .download {
-      margin-top: 10px;
+    .book-container.flipped .front {
+      transform: rotate(-120deg) translate(-100%, -100%);
     }
 
-    .download button {
-      padding: 10px 20px;
+    .controls {
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 12px 24px;
       font-size: 18px;
-      background: #666;
+      background: #555;
       color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
     }
 
-    .download button:hover {
-      background: #888;
+    button:hover {
+      background: #777;
     }
   </style>
 </head>
 <body>
 
-  <div class="book" onclick="this.querySelector('.page').classList.toggle('flipped')">
-    <div class="page">
-      <div class="front"></div>
-      <div class="back"></div>
-    </div>
+  <div class="book-container" id="book">
+    <div class="page back"></div>
+    <div class="page front" id="frontPage"></div>
   </div>
 
-  <div class="download">
+  <div class="controls">
+    <button onclick="flipPage()">Flip Page</button>
     <button onclick="downloadPDF()">⬇ Download PDF</button>
   </div>
 
   <script>
+    function flipPage() {
+      document.getElementById('book').classList.toggle('flipped');
+    }
+
     function downloadPDF() {
       const link = document.createElement('a');
       link.href = 'apollo-flyer.pdf';
