@@ -8,39 +8,82 @@
       margin: 0;
       padding: 0;
       height: 100%;
-      overflow: hidden;
       background-color: #000;
+      font-family: Arial, sans-serif;
     }
 
-    iframe {
+    #pdfFrame {
       width: 100vw;
-      height: 100vh;
+      height: 90vh;
       border: none;
+    }
+
+    .nav-container {
+      height: 10vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #111;
+      position: relative;
     }
 
     .nav-btn {
-      position: absolute;
-      bottom: 20px;
-      width: 40px;
-      height: 40px;
-      background: white;
-      border-radius: 50%;
+      width: 80px;
+      height: 50px;
+      background: #444;
       border: none;
-      cursor: pointer;
-      font-size: 24px;
-      font-weight: bold;
+      border-radius: 25px;
+      margin: 0 20px;
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      position: relative;
     }
 
-    #prevBtn {
-      left: 20px;
+    .nav-btn::before {
+      content: "";
+      width: 30px;
+      height: 30px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
     }
 
-    #nextBtn {
-      right: 20px;
+    #prevBtn::before {
+      left: 15px;
+      top: 10px;
+      content: "◀";
+      font-size: 20px;
+      color: gray;
+      text-align: center;
+    }
+
+    #nextBtn::before {
+      right: 15px;
+      top: 10px;
+      content: "▶";
+      font-size: 20px;
+      color: gray;
+      text-align: center;
+    }
+
+    .download-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 0;
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      background: #fff;
+      color: #000;
+      border: none;
+      cursor: pointer;
+      border-bottom-left-radius: 0.5rem;
     }
   </style>
 </head>
@@ -48,8 +91,11 @@
 
   <iframe id="pdfFrame" src="apollo-flyer-page1.pdf"></iframe>
 
-  <button id="prevBtn" class="nav-btn">&#9664;</button>
-  <button id="nextBtn" class="nav-btn">&#9654;</button>
+  <div class="nav-container">
+    <button id="prevBtn" class="nav-btn"></button>
+    <button id="nextBtn" class="nav-btn"></button>
+    <a href="apollo-flyer-page1.pdf" download class="download-btn">Download</a>
+  </div>
 
   <script>
     const pages = ["apollo-flyer-page1.pdf", "apollo-flyer-page2.pdf"];
@@ -58,9 +104,11 @@
     const frame = document.getElementById("pdfFrame");
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
+    const downloadBtn = document.querySelector('.download-btn');
 
     function updatePage() {
       frame.src = pages[currentPage];
+      downloadBtn.href = pages[currentPage];
     }
 
     prevBtn.onclick = () => {
