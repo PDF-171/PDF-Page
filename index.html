@@ -1,105 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>Simple Flipbook</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <title>Responsive Turn.js Flipbook</title>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/turn.min.js"></script>
   <style>
-    body {
+    html, body {
       margin: 0;
       background: #111;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      justify-content: space-between;
       height: 100vh;
       overflow: hidden;
-      font-family: sans-serif;
     }
 
-    #flipbook {
-      position: relative;
+    #flip-container {
       width: 90vw;
-      height: 90vh;
-      max-width: 600px;
-      max-height: 800px;
-      perspective: 2000px;
+      height: calc(90vw * 1.416); /* A4 aspect ratio: height = width * (3508 / 2477 ≈ 1.416) */
+      max-width: 1200px;
+      max-height: calc(1200px * 1.416);
+    }
+
+    #book {
+      width: 100%;
+      height: 100%;
     }
 
     .page {
-      position: absolute;
-      width: 100%;
+      width: 50%;
       height: 100%;
-      backface-visibility: hidden;
-      background: #000;
-      transition: transform 1s ease;
-      transform-origin: left center;
-      border: 2px solid #444;
-      box-shadow: 0 0 10px #000;
     }
 
     .page img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-    }
-
-    .page.flipped {
-      transform: rotateY(-180deg);
-      z-index: 0;
-    }
-
-    .buttons {
-      height: 10vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .buttons button {
-      background: #555;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 1rem;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .buttons button:hover {
-      background: #777;
+      object-fit: contain;
+      display: block;
     }
   </style>
 </head>
 <body>
 
-  <div id="flipbook">
-    <div class="page" id="page2"><img src="apollo-flyer-page2.jpg" alt="Page 2" /></div>
-    <div class="page" id="page1"><img src="apollo-flyer-page1.jpg" alt="Page 1" /></div>
+<div id="flip-container">
+  <div id="book">
+    <div class="page"><img src="apollo-flyer-page1.jpg" alt="Page 1" /></div>
+    <div class="page"><img src="apollo-flyer-page2.jpg" alt="Page 2" /></div>
+    <!-- Add more pages if needed -->
   </div>
+</div>
 
-  <div class="buttons">
-    <button onclick="flipPage()">📖 Flip</button>
-    <button onclick="downloadPDF()">⬇ Download PDF</button>
-  </div>
+<script>
+  $(document).ready(function() {
+    $('#book').turn({
+      width: $('#flip-container').width(),
+      height: $('#flip-container').height(),
+      autoCenter: true,
+      elevation: 50,
+      gradients: true
+    });
 
-  <script>
-    let flipped = false;
-
-    function flipPage() {
-      flipped = !flipped;
-      document.getElementById('page1').classList.toggle('flipped', flipped);
-    }
-
-    function downloadPDF() {
-      const link = document.createElement('a');
-      link.href = 'apollo-flyer.pdf';
-      link.download = 'apollo-flyer.pdf';
-      link.click();
-    }
-  </script>
+    // Recalculate on window resize
+    $(window).on('resize', function () {
+      $('#book').turn('size', $('#flip-container').width(), $('#flip-container').height());
+    });
+  });
+</script>
 
 </body>
 </html>
