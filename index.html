@@ -23,7 +23,7 @@
 </head>
 <body>
 
-  <iframe id="pdf" src="https://raw.githubusercontent.com/PDF-171/PDF-Page/main/apollo-flyer.pdf#page=1"></iframe>
+  <iframe id="pdf" src="apollo-flyer.pdf#page=1"></iframe>
 
   <script>
     const iframe = document.getElementById('pdf');
@@ -33,7 +33,7 @@
     iframe.addEventListener('click', () => {
       if (currentPage < totalPages) {
         currentPage++;
-        iframe.src = `https://raw.githubusercontent.com/PDF-171/PDF-Page/main/apollo-flyer.pdf#page=${currentPage}`;
+        iframe.src = `apollo-flyer.pdf#page=${currentPage}`;
       } else {
         alert("You reached the last page.");
       }
