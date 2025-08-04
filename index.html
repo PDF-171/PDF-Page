@@ -1,124 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Apollo Flyer Viewer</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pure CSS Flipbook</title>
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
-      background: #000;
-      overflow: hidden;
+      background: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       height: 100vh;
       font-family: sans-serif;
     }
 
-    #pdfContainer {
+    .book {
+      width: 600px;
       height: 90vh;
-      width: 100vw;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    #controls {
-      height: 10vh;
-      width: 100vw;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #444;
+      perspective: 2000px;
       position: relative;
     }
 
-    .arrow-box {
-      background: #888;
-      border-radius: 50px;
-      padding: 0.5rem 2rem;
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-    }
-
-    .arrow {
-      width: 40px;
-      height: 40px;
-      background: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 20px;
-      color: gray;
-    }
-
-    #downloadBtn {
+    .page {
+      width: 100%;
+      height: 100%;
       position: absolute;
-      right: 1rem;
-      background: none;
-      border: none;
+      transform-style: preserve-3d;
+      transition: transform 1s;
       cursor: pointer;
-      font-size: 24px;
-      color: white;
     }
 
-    #downloadBtn:hover {
-      color: #ccc;
+    .page.flipped {
+      transform: rotateY(-180deg);
+    }
+
+    .front, .back {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      backface-visibility: hidden;
+      background-size: cover;
+      background-position: center;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .front {
+      background-image: url('apollo-flyer-page1.jpg');
+      z-index: 2;
+    }
+
+    .back {
+      background-image: url('apollo-flyer-page2.jpg');
+      transform: rotateY(180deg);
+    }
+
+    .download {
+      margin-top: 10px;
+    }
+
+    .download button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background: #666;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .download button:hover {
+      background: #888;
     }
   </style>
 </head>
 <body>
 
-  <div id="pdfContainer">
-    <iframe id="pdfFrame" src="apollo-flyer-page1.pdf"></iframe>
+  <div class="book" onclick="this.querySelector('.page').classList.toggle('flipped')">
+    <div class="page">
+      <div class="front"></div>
+      <div class="back"></div>
+    </div>
   </div>
 
-  <div id="controls">
-    <div class="arrow-box">
-      <div id="prevBtn" class="arrow">&#9664;</div>
-      <div id="nextBtn" class="arrow">&#9654;</div>
-    </div>
-    <a id="downloadBtn" href="apollo-flyer.pdf" download title="Download">&#8681;</a>
+  <div class="download">
+    <button onclick="downloadPDF()">⬇ Download PDF</button>
   </div>
 
   <script>
-    // List your split pages here
-    const pages = [
-      "apollo-flyer-page1.pdf",
-      "apollo-flyer-page2.pdf"
-      // Add more like "apollo-flyer-page3.pdf" if needed
-    ];
-
-    let currentPage = 0;
-
-    const frame = document.getElementById("pdfFrame");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
-
-    function updatePage() {
-      frame.src = pages[currentPage];
+    function downloadPDF() {
+      const link = document.createElement('a');
+      link.href = 'apollo-flyer.pdf';
+      link.download = 'apollo-flyer.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
-
-    prevBtn.onclick = () => {
-      if (currentPage > 0) {
-        currentPage--;
-        updatePage();
-      }
-    };
-
-    nextBtn.onclick = () => {
-      if (currentPage < pages.length - 1) {
-        currentPage++;
-        updatePage();
-      }
-    };
   </script>
 
 </body>
