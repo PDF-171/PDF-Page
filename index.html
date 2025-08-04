@@ -2,40 +2,51 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Apollo Flyer</title>
+  <title>Apollo Flyer Viewer</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
       background: #000;
-      font-family: Arial, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      font-family: sans-serif;
     }
 
-    #pdfFrame {
-      width: 100vw;
+    #pdfContainer {
       height: 90vh;
-      border: none;
-    }
-
-    .nav-bar {
-      height: 10vh;
+      width: 100vw;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #000;
     }
 
-    .nav-container {
-      background: #ccc;
-      padding: 0.5rem 1rem;
-      border-radius: 3rem;
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    #controls {
+      height: 10vh;
+      width: 100vw;
       display: flex;
-      gap: 1rem;
+      justify-content: center;
       align-items: center;
+      background: #444;
+      position: relative;
     }
 
-    .circle-btn {
+    .arrow-box {
+      background: #888;
+      border-radius: 50px;
+      padding: 0.5rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .arrow {
       width: 40px;
       height: 40px;
       background: white;
@@ -43,47 +54,48 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
       font-size: 20px;
       color: gray;
-      cursor: pointer;
+    }
+
+    #downloadBtn {
+      position: absolute;
+      right: 1rem;
+      background: none;
       border: none;
+      cursor: pointer;
+      font-size: 24px;
+      color: white;
     }
 
-    .download-btn {
-      width: 40px;
-      height: 40px;
-      background: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      color: gray;
-      text-decoration: none;
-    }
-
-    .download-btn:hover,
-    .circle-btn:hover {
-      background: #f0f0f0;
+    #downloadBtn:hover {
+      color: #ccc;
     }
   </style>
 </head>
 <body>
 
-  <!-- PDF Viewer -->
-  <iframe id="pdfFrame" src="apollo-flyer-page1.pdf"></iframe>
+  <div id="pdfContainer">
+    <iframe id="pdfFrame" src="apollo-flyer-page1.pdf"></iframe>
+  </div>
 
-  <!-- Bottom Controls -->
-  <div class="nav-bar">
-    <div class="nav-container">
-      <button class="circle-btn" id="prevBtn">&#9664;</button>
-      <button class="circle-btn" id="nextBtn">&#9654;</button>
-      <a class="download-btn" href="apollo-flyer.pdf" download title="Download">&#8681;</a>
+  <div id="controls">
+    <div class="arrow-box">
+      <div id="prevBtn" class="arrow">&#9664;</div>
+      <div id="nextBtn" class="arrow">&#9654;</div>
     </div>
+    <a id="downloadBtn" href="apollo-flyer.pdf" download title="Download">&#8681;</a>
   </div>
 
   <script>
-    const pages = ["apollo-flyer-page1.pdf", "apollo-flyer-page2.pdf"];
+    // List your split pages here
+    const pages = [
+      "apollo-flyer-page1.pdf",
+      "apollo-flyer-page2.pdf"
+      // Add more like "apollo-flyer-page3.pdf" if needed
+    ];
+
     let currentPage = 0;
 
     const frame = document.getElementById("pdfFrame");
