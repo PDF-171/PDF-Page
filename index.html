@@ -1,68 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Responsive Turn.js Flipbook</title>
-  <script src="js/jquery.min.js"></script>
-  <script src="js/turn.min.js"></script>
+  <title>Turn.js Example</title>
+  <link rel="stylesheet" type="text/css" href="css/basic.css">
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/turn.min.js"></script>
   <style>
-    html, body {
+    body {
       margin: 0;
       background: #111;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      overflow: hidden;
-    }
-
-    #flip-container {
-      width: 90vw;
-      height: calc(90vw * 1.416); /* A4 aspect ratio: height = width * (3508 / 2477 ≈ 1.416) */
-      max-width: 1200px;
-      max-height: calc(1200px * 1.416);
     }
 
     #book {
-      width: 100%;
-      height: 100%;
+      width: 1200px; /* 600 x 2 pages */
+      height: 850px;
     }
 
     .page {
-      width: 50%;
-      height: 100%;
+      width: 600px;
+      height: 850px;
+      overflow: hidden;
     }
 
     .page img {
       width: 100%;
       height: 100%;
       object-fit: contain;
-      display: block;
     }
   </style>
 </head>
 <body>
 
-<div id="flip-container">
-  <div id="book">
-    <div class="page"><img src="apollo-flyer-page1.jpg" alt="Page 1" /></div>
-    <div class="page"><img src="apollo-flyer-page2.jpg" alt="Page 2" /></div>
-    <!-- Add more pages if needed -->
-  </div>
+<div id="book">
+  <div class="page"><img src="apollo-flyer-page1.jpg" alt="Page 1"></div>
+  <div class="page"><img src="apollo-flyer-page2.jpg" alt="Page 2"></div>
+  <div class="page">Page 3 Content</div>
+  <div class="page">Page 4 Content</div>
 </div>
 
 <script>
-  $(document).ready(function() {
+  $(window).ready(function() {
     $('#book').turn({
-      width: $('#flip-container').width(),
-      height: $('#flip-container').height(),
+      width: 1200,      // 600px per page × 2
+      height: 850,      // fits most screens, matches your aspect ratio
       autoCenter: true,
-      elevation: 50,
-      gradients: true
-    });
-
-    // Recalculate on window resize
-    $(window).on('resize', function () {
-      $('#book').turn('size', $('#flip-container').width(), $('#flip-container').height());
+      gradients: true,
+      elevation: 50
     });
   });
 </script>
