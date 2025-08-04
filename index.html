@@ -1,43 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>GitHub PDF Viewer (Click to Next Page)</title>
+  <meta charset="UTF-8" />
+  <title>Apollo Flyer Viewer</title>
   <style>
     html, body {
       margin: 0;
-      background: #111;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background-color: #000;
     }
+
     iframe {
-      width: 80vw;
-      height: 90vh;
-      border: 2px solid white;
-      box-shadow: 0 0 10px white;
+      width: 100vw;
+      height: 100vh;
+      border: none;
+    }
+
+    .nav-btn {
+      position: absolute;
+      bottom: 20px;
+      width: 40px;
+      height: 40px;
+      background: white;
+      border-radius: 50%;
+      border: none;
       cursor: pointer;
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    #prevBtn {
+      left: 20px;
+    }
+
+    #nextBtn {
+      right: 20px;
     }
   </style>
 </head>
 <body>
 
-  <iframe id="pdf" src="apollo-flyer.pdf#page=1"></iframe>
+  <iframe id="pdfFrame" src="apollo-flyer-page1.pdf"></iframe>
+
+  <button id="prevBtn" class="nav-btn">&#9664;</button>
+  <button id="nextBtn" class="nav-btn">&#9654;</button>
 
   <script>
-    const iframe = document.getElementById('pdf');
-    let currentPage = 1;
-    const totalPages = 10; 
+    const pages = ["apollo-flyer-page1.pdf", "apollo-flyer-page2.pdf"];
+    let currentPage = 0;
 
-    iframe.addEventListener('click', () => {
-      if (currentPage < totalPages) {
-        currentPage++;
-        iframe.src = `apollo-flyer.pdf#page=${currentPage}`;
-      } else {
-        alert("You reached the last page.");
+    const frame = document.getElementById("pdfFrame");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    function updatePage() {
+      frame.src = pages[currentPage];
+    }
+
+    prevBtn.onclick = () => {
+      if (currentPage > 0) {
+        currentPage--;
+        updatePage();
       }
-    });
+    };
+
+    nextBtn.onclick = () => {
+      if (currentPage < pages.length - 1) {
+        currentPage++;
+        updatePage();
+      }
+    };
   </script>
 
 </body>
