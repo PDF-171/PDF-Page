@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GitHub PDF Viewer (Click to Next Page)</title>
+  <style>
+    html, body {
+      margin: 0;
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    iframe {
+      width: 80vw;
+      height: 90vh;
+      border: 2px solid white;
+      box-shadow: 0 0 10px white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <iframe id="pdf" src="https://raw.githubusercontent.com/PDF-171/PDF-Page/main/apollo-flyer.pdf#page=1"></iframe>
+
+  <script>
+    const iframe = document.getElementById('pdf');
+    let currentPage = 1;
+    const totalPages = 10; 
+
+    iframe.addEventListener('click', () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        iframe.src = `https://raw.githubusercontent.com/PDF-171/PDF-Page/main/apollo-flyer.pdf#page=${currentPage}`;
+      } else {
+        alert("You reached the last page.");
+      }
+    });
+  </script>
+
+</body>
+</html>
