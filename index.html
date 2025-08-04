@@ -1,89 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Page Curl Flipbook</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- jQuery and Turn.js -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/blasten/turn.js@master/lib/turn.min.js"></script>
+  <meta charset="UTF-8" />
+  <title>Simple Flipbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    html, body {
+    body {
       margin: 0;
-      background: #222;
-      height: 100vh;
+      background: #111;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
+      height: 100vh;
+      overflow: hidden;
+      font-family: sans-serif;
     }
 
     #flipbook {
-      width: 600px;
-      height: 850px;
+      position: relative;
+      width: 90vw;
+      height: 90vh;
+      max-width: 600px;
+      max-height: 800px;
+      perspective: 2000px;
     }
 
-    #flipbook .page {
-      width: 300px;
-      height: 850px;
-      background-size: cover;
-      background-position: center;
+    .page {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      background: #000;
+      transition: transform 1s ease;
+      transform-origin: left center;
+      border: 2px solid #444;
+      box-shadow: 0 0 10px #000;
     }
 
-    .controls {
+    .page img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .page.flipped {
+      transform: rotateY(-180deg);
+      z-index: 0;
+    }
+
+    .buttons {
       height: 10vh;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       gap: 20px;
     }
 
-    .controls button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background: #666;
+    .buttons button {
+      background: #555;
       color: white;
       border: none;
-      border-radius: 4px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 5px;
       cursor: pointer;
     }
 
-    .controls button:hover {
-      background: #888;
+    .buttons button:hover {
+      background: #777;
     }
   </style>
 </head>
 <body>
 
   <div id="flipbook">
-    <div class="page" style="background-image: url('apollo-flyer-page1.jpg');"></div>
-    <div class="page" style="background-image: url('apollo-flyer-page2.jpg');"></div>
+    <div class="page" id="page2"><img src="apollo-flyer-page2.jpg" alt="Page 2" /></div>
+    <div class="page" id="page1"><img src="apollo-flyer-page1.jpg" alt="Page 1" /></div>
   </div>
 
-  <div class="controls">
-    <button onclick="$('#flipbook').turn('previous')">◀ Previous</button>
-    <button onclick="$('#flipbook').turn('next')">Next ▶</button>
-    <button onclick="downloadPDF()">⬇ Download</button>
+  <div class="buttons">
+    <button onclick="flipPage()">📖 Flip</button>
+    <button onclick="downloadPDF()">⬇ Download PDF</button>
   </div>
 
   <script>
-    $('#flipbook').turn({
-      width: 600,
-      height: 850,
-      autoCenter: true,
-      elevation: 50,
-      gradients: true
-    });
+    let flipped = false;
+
+    function flipPage() {
+      flipped = !flipped;
+      document.getElementById('page1').classList.toggle('flipped', flipped);
+    }
 
     function downloadPDF() {
       const link = document.createElement('a');
       link.href = 'apollo-flyer.pdf';
       link.download = 'apollo-flyer.pdf';
-      document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
     }
   </script>
 
